@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "empathic-narrator",
+	"name": "Empathic Narrator",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "An Obsidian plugin that uses Hume AI to provide empathic text-to-speech and voice interaction capabilities.",
+	"author": "TheJusticeMan",
+	"authorUrl": "https://github.com/TheJusticeMan",
 	"isDesktopOnly": false
 }

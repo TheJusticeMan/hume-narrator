@@ -1,8 +1,67 @@
 /*
+ * Empathic Narrator Plugin Styles
+ */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+/* Modal styles */
+.empathic-narrator-modal {
+    padding: 20px;
+}
 
-If your plugin does not need CSS, delete this file.
+.empathic-narrator-modal h2 {
+    margin-bottom: 16px;
+}
 
-*/
+.empathic-narrator-modal h3 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Status indicator */
+.evi-status {
+    padding: 8px 12px;
+    background-color: var(--background-secondary);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Button container */
+.evi-button-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* Transcription and response areas */
+.evi-transcription,
+.evi-response {
+    padding: 12px;
+    background-color: var(--background-secondary);
+    border-radius: 4px;
+    min-height: 60px;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.evi-transcription {
+    color: var(--text-normal);
+}
+
+.evi-response {
+    color: var(--text-accent);
+}
+
+/* Ribbon icon */
+.empathic-narrator-ribbon {
+    color: var(--icon-color);
+}
+
+.empathic-narrator-ribbon:hover {
+    color: var(--icon-color-hover);
+}
+
