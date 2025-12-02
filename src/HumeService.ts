@@ -1,5 +1,4 @@
 import { HumeClient } from 'hume';
-import { Buffer } from 'buffer';
 import { Notice } from 'obsidian';
 import type { EmpathicNarratorSettings } from './types';
 
@@ -78,9 +77,13 @@ export class HumeService {
             
             // The generation has a top-level audio field with the complete audio
             if (generation.audio) {
-                // Decode base64 audio using the buffer polyfill (mobile-safe)
-                const audioBuffer = Buffer.from(generation.audio, 'base64');
-                const audioBlob = new Blob([audioBuffer], { type: 'audio/wav' });
+                // Decode base64 audio using atob (mobile-safe and consistent with playAudioResponse)
+                const binaryString = atob(generation.audio);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                const audioBlob = new Blob([bytes], { type: 'audio/wav' });
 
                 // Create object URL for playback
                 const audioUrl = URL.createObjectURL(audioBlob);

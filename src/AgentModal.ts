@@ -238,28 +238,61 @@ export class AgentModal extends Modal {
     private async startAudioStreaming(): Promise<void> {
         if (!this.mediaStream || !this.socket) return;
 
-        // Create MediaRecorder for audio capture
-        this.mediaRecorder = new MediaRecorder(this.mediaStream, {
-            mimeType: 'audio/webm;codecs=opus'
-        });
+        // Determine supported MIME type for broader platform compatibility
+        const mimeType = this.getSupportedMimeType();
 
-        this.mediaRecorder.ondataavailable = async (event) => {
+        // Create MediaRecorder for audio capture
+        const options: MediaRecorderOptions = {};
+        if (mimeType) {
+            options.mimeType = mimeType;
+        }
+        this.mediaRecorder = new MediaRecorder(this.mediaStream, options);
+
+        this.mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0 && this.socket) {
+                // Store socket reference to avoid race condition
+                const socket = this.socket;
+                
                 // Convert blob to base64 and send
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64 = reader.result as string;
                     const base64Data = base64.split(',')[1];
-                    if (base64Data && this.socket) {
-                        this.socket.sendAudioInput({ data: base64Data });
+                    // Check socket is still available before sending
+                    if (base64Data && socket && socket.readyState === 1) {
+                        socket.sendAudioInput({ data: base64Data });
                     }
+                };
+                reader.onerror = () => {
+                    console.error('Error reading audio data');
                 };
                 reader.readAsDataURL(event.data);
             }
         };
 
-        // Start recording with a timeslice for streaming
-        this.mediaRecorder.start(100); // Send audio chunks every 100ms
+        // Start recording with a timeslice for streaming (250ms for better mobile performance)
+        this.mediaRecorder.start(250);
+    }
+
+    /**
+     * Gets a supported MIME type for MediaRecorder
+     * Checks for platform compatibility and falls back to defaults
+     */
+    private getSupportedMimeType(): string | undefined {
+        const mimeTypes = [
+            'audio/webm;codecs=opus',
+            'audio/webm',
+            'audio/mp4',
+            'audio/ogg;codecs=opus',
+            ''  // Empty string lets browser choose default
+        ];
+
+        for (const mimeType of mimeTypes) {
+            if (mimeType === '' || MediaRecorder.isTypeSupported(mimeType)) {
+                return mimeType || undefined;
+            }
+        }
+        return undefined;
     }
 
     /**
