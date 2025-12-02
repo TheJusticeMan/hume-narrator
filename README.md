@@ -1,94 +1,81 @@
-# Obsidian Sample Plugin
+# Empathic Narrator
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+An Obsidian plugin that uses Hume AI to provide empathic text-to-speech and voice interaction capabilities. The plugin is designed to work on both Desktop and Mobile (Android/iOS) without Node.js runtime dependencies.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- **Text-to-Speech with Emotion**: Select any text in your notes and have it read aloud using Hume AI's empathic TTS.
+- **Voice Brainstorm (EVI)**: Use voice interaction to brainstorm ideas with Hume's Empathic Voice Interface.
+- **Mobile Compatible**: Designed to work seamlessly on both desktop and mobile Obsidian apps.
 
-## First time developing plugins?
+## Installation
 
-Quick starting guide for new plugin devs:
+### Manual Installation
+1. Download `main.js`, `manifest.json`, and `styles.css` from the latest release.
+2. Create a folder named `empathic-narrator` in your vault's `.obsidian/plugins/` directory.
+3. Copy the downloaded files into this folder.
+4. Enable the plugin in Obsidian's settings under "Community plugins".
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### From Source
+1. Clone this repository.
+2. Run `npm install` to install dependencies.
+3. Run `npm run build` to compile the plugin.
+4. Copy `main.js`, `manifest.json`, and `styles.css` to your vault's `.obsidian/plugins/empathic-narrator/` folder.
 
-## Releasing new releases
+## Configuration
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+1. Open Obsidian Settings.
+2. Navigate to "Community plugins" → "Empathic Narrator".
+3. Enter your **Hume API Key**. You can obtain this from your [Hume AI Dashboard](https://platform.hume.ai/).
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## Usage
 
-## Adding your plugin to the community plugin list
+### Read Selection with Emotion
+1. Select some text in your note.
+2. Open the command palette (Ctrl/Cmd + P).
+3. Search for "Read Selection with Emotion" and execute the command.
+4. The selected text will be synthesized and played with empathic voice characteristics.
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### Voice Brainstorm
+1. Click the microphone icon in the ribbon (left sidebar), or
+2. Open the command palette and search for "Open Voice Brainstorm".
+3. Click "Start Listening" to begin voice interaction.
+4. Speak your thoughts and the AI will respond both with text and voice.
 
-## How to use
+## Technical Notes
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+This plugin is designed to be **mobile-safe**:
+- Uses the `buffer` polyfill instead of Node.js `Buffer` for base64 decoding.
+- Uses HTML5 `Audio` API with `Blob` objects instead of filesystem operations.
+- Uses `navigator.mediaDevices.getUserMedia` for microphone access.
+- Avoids all Node.js-specific modules like `fs`, `path`, etc.
 
-## Manually installing the plugin
+## Dependencies
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+- [Hume AI SDK](https://github.com/humeai/hume-typescript-sdk) - For AI-powered TTS and voice interaction.
+- [buffer](https://www.npmjs.com/package/buffer) - Buffer polyfill for mobile compatibility.
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint ./src/`
+## Development
 
-## Funding URL
+### Prerequisites
+- Node.js (v16 or higher)
+- npm
 
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+### Setup
+```bash
+npm install
 ```
 
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+### Build
+```bash
+npm run build
 ```
 
-## API Documentation
+### Development Mode
+```bash
+npm run dev
+```
 
-See https://github.com/obsidianmd/obsidian-api
+## License
+
+MIT
