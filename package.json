@@ -1,6 +1,6 @@
 {
 	"name": "empathic-narrator",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An Obsidian plugin that uses Hume AI to provide empathic text-to-speech and voice interaction capabilities.",
 	"main": "main.js",
 	"scripts": {
